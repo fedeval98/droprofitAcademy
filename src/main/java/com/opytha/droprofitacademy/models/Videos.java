@@ -1,8 +1,6 @@
 package com.opytha.droprofitacademy.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -12,13 +10,14 @@ import java.util.Set;
 public class Videos {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String videoName, url;
 
     private LocalDate creationDate;
 
+    @ManyToOne
     private Courses courses;
 
     public Videos() {

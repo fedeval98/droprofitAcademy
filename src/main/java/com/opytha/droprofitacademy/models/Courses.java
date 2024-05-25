@@ -9,7 +9,7 @@ import java.util.HashSet;
 public class Courses {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -17,7 +17,7 @@ public class Courses {
     @ManyToOne
     private Client client;
 
-    @OneToMany (mappedBy = "videos", fetch = FetchType.EAGER)
+    @OneToMany (mappedBy = "courses", fetch = FetchType.EAGER)
     private Set<Videos> videos = new HashSet<>();
 
     public Courses() {

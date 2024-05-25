@@ -4,7 +4,9 @@ import com.opytha.droprofitacademy.models.Videos;
 import com.opytha.droprofitacademy.repositories.VideosRepository;
 import com.opytha.droprofitacademy.services.VideosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class VideosServiceImplement implements VideosService {
 
     @Autowired
