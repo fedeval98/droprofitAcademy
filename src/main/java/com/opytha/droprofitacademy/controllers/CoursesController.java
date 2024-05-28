@@ -1,6 +1,7 @@
 package com.opytha.droprofitacademy.controllers;
 
 import com.opytha.droprofitacademy.dtos.CoursesDTO;
+import com.opytha.droprofitacademy.dtos.requests.CreateCourse;
 import com.opytha.droprofitacademy.models.Courses;
 import com.opytha.droprofitacademy.services.CoursesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class CoursesController {
     @GetMapping("All")
     public Set<CoursesDTO> getAllCourses() {
         return coursesService.getAllCoursesDTO();
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<String> createCourse(@RequestBody CreateCourse createCourse) {
+        return coursesService.createCourse(createCourse);
     }
 
     @PatchMapping("/delete")

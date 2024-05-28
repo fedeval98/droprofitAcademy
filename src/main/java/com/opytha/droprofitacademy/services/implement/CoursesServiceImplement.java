@@ -1,7 +1,10 @@
 package com.opytha.droprofitacademy.services.implement;
 
 import com.opytha.droprofitacademy.dtos.CoursesDTO;
+import com.opytha.droprofitacademy.dtos.requests.CreateCourse;
+import com.opytha.droprofitacademy.models.Client;
 import com.opytha.droprofitacademy.models.Courses;
+import com.opytha.droprofitacademy.repositories.ClientsRepository;
 import com.opytha.droprofitacademy.repositories.CoursesRepository;
 import com.opytha.droprofitacademy.services.CoursesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,9 @@ public class CoursesServiceImplement implements CoursesService {
 
     @Autowired
     private CoursesRepository coursesRepository;
+
+    @Autowired
+    private ClientsRepository clientsRepository;
 
     @Override
     public Courses findById(Long id) {
@@ -38,6 +44,30 @@ public class CoursesServiceImplement implements CoursesService {
     @Override
     public Set<CoursesDTO> getAllCoursesDisabled() {
         return null;
+    }
+
+    @Override
+    public ResponseEntity<String> createCourse(CreateCourse createCourse) {
+
+        if(createCourse.getName().isBlank()){
+            return new ResponseEntity<>("Name can't be blank", HttpStatus.FORBIDDEN);
+        }
+        if(createCourse.getClient() == null){
+            return new ResponseEntity<>("Client information is required", HttpStatus.FORBIDDEN);
+        }
+        Client client = clientsRepository.findById(createCourse.getClient().getId()).orElse(null);
+        if (client == null) {
+            return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
+        }
+
+        Courses course = new Courses();
+        course.setName(createCourse.getName());
+        course.setClient(client);
+        course.setActive(true);
+
+        coursesRepository.save(course);
+
+        return new ResponseEntity<>("Course created successfully", HttpStatus.CREATED);
     }
 
     @Override
