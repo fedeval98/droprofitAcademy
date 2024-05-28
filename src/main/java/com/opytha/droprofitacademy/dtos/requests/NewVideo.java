@@ -2,7 +2,7 @@ package com.opytha.droprofitacademy.dtos.requests;
 
 import com.opytha.droprofitacademy.models.Courses;
 
-public class newVideo {
+public class NewVideo {
 
     private String videoName, url;
 
