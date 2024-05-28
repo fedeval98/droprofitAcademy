@@ -7,4 +7,8 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource
 public interface ClientsRepository extends JpaRepository<Client,Long> {
     Client findByEmail(String email);
+
+    boolean existsByEmail(String email);
+
+    Client findByClientEmailAndId(String email, Long id);
 }

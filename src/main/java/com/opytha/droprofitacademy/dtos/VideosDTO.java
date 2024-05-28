@@ -10,14 +10,12 @@ public class VideosDTO {
     private Long id;
     private String videoName, url;
     private LocalDate creationDate;
-    private Courses courses;
 
     public VideosDTO(Videos videos) {
         id = videos.getId();
         videoName = videos.getVideoName();
         url = videos.getUrl();
         creationDate = videos.getCreationDate();
-        courses = videos.getCourses();
     }
 
     public Long getId() {
@@ -36,7 +34,4 @@ public class VideosDTO {
         return creationDate;
     }
 
-    public Courses getCourses() {
-        return courses;
-    }
 }

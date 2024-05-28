@@ -20,6 +20,8 @@ public class Courses {
     @OneToMany (mappedBy = "courses", fetch = FetchType.EAGER)
     private Set<Videos> videos = new HashSet<>();
 
+    private boolean active = true;
+
     public Courses() {
     }
 
@@ -51,5 +53,17 @@ public class Courses {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Set<Videos> getVideos() {
+        return videos;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

@@ -1,6 +1,7 @@
 package com.opytha.droprofitacademy.models;
 
 import com.opytha.droprofitacademy.models.enums.Roles;
+import com.opytha.droprofitacademy.models.enums.Status;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -20,16 +21,17 @@ public class Client {
     @OneToMany (mappedBy = "client", fetch = FetchType.EAGER)
     private Set<Courses> courses = new HashSet<>();
 
+    private boolean active = true;
+
     public Client() {
 
     }
 
-    public Client(String firstName, String lastName, String email, String password, Roles rol) {
+    public Client(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
-        this.rol = rol;
+        this.password = password;;
     }
 
     public void addCourses( Courses courses){
@@ -81,4 +83,15 @@ public class Client {
         this.rol = rol;
     }
 
+    public Set<Courses> getCourses() {
+        return courses;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }
