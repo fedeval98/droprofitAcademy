@@ -95,7 +95,7 @@ public class ClientServiceImplement implements ClientService {
 
     @Override
     public ResponseEntity<String> findByClientEmailAndId(String email, Long id, Roles roltype) {
-        Client client = clientsRepository.findByClientEmailAndId(email,id);
+        Client client = clientsRepository.findByEmailAndId(email,id);
 
         if(roltype == Roles.USER){
             return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
