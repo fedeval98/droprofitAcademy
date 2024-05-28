@@ -94,11 +94,15 @@ public class ClientServiceImplement implements ClientService {
     }
 
     @Override
-    public ResponseEntity<String> findByClientEmailAndId(String email, Long id) {
+    public ResponseEntity<String> findByClientEmailAndId(String email, Long id, Roles roltype) {
         Client client = clientsRepository.findByClientEmailAndId(email,id);
 
+        if(roltype == Roles.USER){
+            return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
+        }
+
         if (client == null){
-            return new ResponseEntity<String>("Client not found", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Client not found", HttpStatus.BAD_REQUEST);
         }
 
         if(!client.isActive()){

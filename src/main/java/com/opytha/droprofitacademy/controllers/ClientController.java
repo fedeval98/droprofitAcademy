@@ -2,9 +2,11 @@ package com.opytha.droprofitacademy.controllers;
 
 import com.opytha.droprofitacademy.dtos.ClientDTO;
 import com.opytha.droprofitacademy.dtos.requests.Register;
+import com.opytha.droprofitacademy.models.enums.Roles;
 import com.opytha.droprofitacademy.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,14 +23,17 @@ public class ClientController {
 
     @GetMapping("/clients/{id}")
     public ResponseEntity<ClientDTO> getClient(@PathVariable Long id){
-        ResponseEntity<ClientDTO> response = clientService.getClient(id);
-        return response;
+        return clientService.getClient(id);
     }
 
     @PostMapping("/clients/register")
     public ResponseEntity<String> createClient(@RequestBody Register newClient){
-        ResponseEntity<String> response = clientService.createClient(newClient);
-        return response;
+        return clientService.createClient(newClient);
+    }
+
+    @PatchMapping("/clients/remove")
+    public ResponseEntity<String> removeClient (Authentication authentication, Long id, Roles roltype){
+        return clientService.findByClientEmailAndId(authentication.getName(), id, roltype);
     }
 
 }

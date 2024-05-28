@@ -11,11 +11,14 @@ public class VideosDTO {
     private String videoName, url;
     private LocalDate creationDate;
 
+    private Courses course;
+
     public VideosDTO(Videos videos) {
         id = videos.getId();
         videoName = videos.getVideoName();
         url = videos.getUrl();
         creationDate = videos.getCreationDate();
+        course = videos.getCourses();
     }
 
     public Long getId() {
