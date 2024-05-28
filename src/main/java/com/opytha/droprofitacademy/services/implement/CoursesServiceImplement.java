@@ -89,6 +89,19 @@ public class CoursesServiceImplement implements CoursesService {
         return new ResponseEntity<>("Course deactivated", HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<String> updateCourse(CoursesDTO coursesDTO) {
+
+        Courses existingCourse = coursesRepository.findById(coursesDTO.getId()).orElse(null);
+        if (existingCourse == null) {
+            return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
+        }
+        existingCourse.setName(coursesDTO.getName());
+        existingCourse.setActive(coursesDTO.isActive());
+        coursesRepository.save(existingCourse);
+        return new ResponseEntity<>("Course updated successfully", HttpStatus.OK);
+    }
+
 
     @Override
     public void saveCourse(Courses courses) {

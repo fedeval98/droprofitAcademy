@@ -36,5 +36,10 @@ public class CoursesController {
         return coursesService.deleteCourse(coursesDTO.getId());
 
     }
+
+    @PatchMapping("/update")
+    public ResponseEntity<String> updateCourse(@RequestBody CoursesDTO coursesDTO) {
+        return coursesService.updateCourse(coursesDTO);
+    }
 }
 

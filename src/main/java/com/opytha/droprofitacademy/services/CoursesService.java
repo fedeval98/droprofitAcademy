@@ -15,5 +15,6 @@ public interface CoursesService {
     Set<CoursesDTO> getAllCoursesDisabled ();
     ResponseEntity<String> createCourse (CreateCourse createCourse);
     ResponseEntity<String> deleteCourse (Long courseId);
+    ResponseEntity<String> updateCourse (CoursesDTO coursesDTO);
     void saveCourse (Courses courses);
 }
