@@ -25,20 +25,9 @@ public class CoursesController {
 
     @PatchMapping("/delete")
     public ResponseEntity<String> deleteCourses(
-            @RequestParam Long courseId,
-            Authentication authentication) {
+           @RequestBody CoursesDTO coursesDTO) {
 
-        Courses course = coursesService.findById(courseId);
-        if (course == null) {
-            return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
-        }
-
-        if (course.isActive()) {
-            coursesService.deleteCourse(course);
-            return new ResponseEntity<>("Course deactivated", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Course already deactivated", HttpStatus.BAD_REQUEST);
-        }
+        return coursesService.deleteCourse(coursesDTO.getId());
 
     }
 }

@@ -2,6 +2,7 @@ package com.opytha.droprofitacademy.services;
 
 import com.opytha.droprofitacademy.dtos.CoursesDTO;
 import com.opytha.droprofitacademy.models.Courses;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Set;
 
@@ -11,6 +12,6 @@ public interface CoursesService {
     Set<Courses> getAllCourses ();
     Set<CoursesDTO> getAllCoursesDTO ();
     Set<CoursesDTO> getAllCoursesDisabled ();
-    void deleteCourse (Courses courses);
+    ResponseEntity<String> deleteCourse (Long courseId);
     void saveCourse (Courses courses);
 }
