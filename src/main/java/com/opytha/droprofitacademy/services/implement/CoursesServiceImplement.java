@@ -4,14 +4,17 @@ import com.opytha.droprofitacademy.dtos.CoursesDTO;
 import com.opytha.droprofitacademy.dtos.requests.CreateCourse;
 import com.opytha.droprofitacademy.models.Client;
 import com.opytha.droprofitacademy.models.Courses;
+import com.opytha.droprofitacademy.models.enums.Roles;
 import com.opytha.droprofitacademy.repositories.ClientsRepository;
 import com.opytha.droprofitacademy.repositories.CoursesRepository;
 import com.opytha.droprofitacademy.services.CoursesService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,8 +40,16 @@ public class CoursesServiceImplement implements CoursesService {
     }
 
     @Override
+    public void deleteCourse(Long id){coursesRepository.deleteById(id);}
+
+    @Override
+    public void saveCourse(Courses courses) {
+        coursesRepository.save(courses);
+    }
+
+    @Override
     public Set<CoursesDTO> getAllCoursesDTO() {
-        return getAllCourses().stream().map(courses -> new CoursesDTO(courses)).collect(Collectors.toSet());
+        return getAllCourses().stream().map(CoursesDTO::new).collect(Collectors.toSet());
     }
 
     @Override
@@ -47,7 +58,7 @@ public class CoursesServiceImplement implements CoursesService {
     }
 
     @Override
-    public ResponseEntity<String> createCourse(CreateCourse createCourse) {
+    public ResponseEntity<String> createCourse(CreateCourse createCourse, Roles roltype) {
 
         if(createCourse.getName().isBlank()){
             return new ResponseEntity<>("Name can't be blank", HttpStatus.FORBIDDEN);
@@ -71,9 +82,10 @@ public class CoursesServiceImplement implements CoursesService {
     }
 
     @Override
-    public ResponseEntity<String> deleteCourse(Long courseId) {
+    @Transactional
+    public ResponseEntity<String> deleteCourses(Long id, Roles roltype) {
 
-        Courses existingCourse = coursesRepository.findById(courseId).orElse(null);
+        Courses existingCourse = coursesRepository.findById(id).orElse(null);
 
         if (existingCourse == null) {
             return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
@@ -90,21 +102,17 @@ public class CoursesServiceImplement implements CoursesService {
     }
 
     @Override
-    public ResponseEntity<String> updateCourse(CoursesDTO coursesDTO) {
+    @Transactional
+    public ResponseEntity<String> updateCourse(CreateCourse createCourse, Roles roltype) {
 
-        Courses existingCourse = coursesRepository.findById(coursesDTO.getId()).orElse(null);
+        Courses existingCourse = coursesRepository.findById(createCourse.getClient().getId()).orElse(null);
         if (existingCourse == null) {
             return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
         }
-        existingCourse.setName(coursesDTO.getName());
-        existingCourse.setActive(coursesDTO.isActive());
+        existingCourse.setName(createCourse.getName());
+        existingCourse.setActive(createCourse.isActive());
         coursesRepository.save(existingCourse);
         return new ResponseEntity<>("Course updated successfully", HttpStatus.OK);
     }
 
-
-    @Override
-    public void saveCourse(Courses courses) {
-        coursesRepository.save(courses);
-    }
 }

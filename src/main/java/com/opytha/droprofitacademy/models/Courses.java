@@ -25,10 +25,8 @@ public class Courses {
     public Courses() {
     }
 
-    public Courses(String name, Client client, boolean active) {
+    public Courses(String name) {
         this.name = name;
-        this.client = client;
-        this.active = active;
     }
 
     public void addVideos(Videos videos){

@@ -24,8 +24,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(authorizeRequest ->
                 authorizeRequest
-                        .requestMatchers("/public/**").permitAll()
-                        .anyRequest().permitAll());
+                        .requestMatchers(HttpMethod.GET ,"/api/courses/All").permitAll()
+                        .requestMatchers(HttpMethod.POST ,"/api/courses/create").permitAll()
+                        .requestMatchers(HttpMethod.PATCH ,"/api/courses/delete").permitAll()
+        );
 
         http.csrf(AbstractHttpConfigurer::disable);
 
