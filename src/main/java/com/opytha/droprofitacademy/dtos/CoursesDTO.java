@@ -12,14 +12,15 @@ public class CoursesDTO {
     private Long id;
     private String name;
     private Client client;
-
     private Set<VideosDTO> videos;
+    private boolean active = true;
 
     public CoursesDTO(Courses courses) {
         id = courses.getId();
         name = courses.getName();
         client = courses.getClient();
         videos = courses.getVideos().stream().map(VideosDTO::new).collect(Collectors.toSet());
+        active = courses.isActive();
     }
 
     public Long getId() {
@@ -36,5 +37,9 @@ public class CoursesDTO {
 
     public Set<VideosDTO> getVideos() {
         return videos;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }
