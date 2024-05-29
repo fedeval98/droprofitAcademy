@@ -37,7 +37,7 @@ public class VideosController {
     }
 
     @DeleteMapping("/videos/remove")
-    public ResponseEntity<String> removeVideo( Long id, Roles roltype){
+    public ResponseEntity<String> removeVideo(@RequestParam Long id, Roles roltype){
         return videosService.removeVideo(id, roltype);
     }
 }

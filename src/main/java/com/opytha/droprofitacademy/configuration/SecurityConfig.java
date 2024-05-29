@@ -27,6 +27,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET ,"/api/courses/All").permitAll()
                         .requestMatchers(HttpMethod.POST ,"/api/courses/create").permitAll()
                         .requestMatchers(HttpMethod.PATCH ,"/api/courses/delete").permitAll()
+                        .anyRequest().permitAll()
         );
 
         http.csrf(AbstractHttpConfigurer::disable);

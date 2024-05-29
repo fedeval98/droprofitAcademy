@@ -60,20 +60,16 @@ public class CoursesServiceImplement implements CoursesService {
     @Override
     public ResponseEntity<String> createCourse(CreateCourse createCourse, Roles roltype) {
 
+        if(roltype == Roles.USER){
+            return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
+        }
+
         if(createCourse.getName().isBlank()){
             return new ResponseEntity<>("Name can't be blank", HttpStatus.FORBIDDEN);
-        }
-        if(createCourse.getClient() == null){
-            return new ResponseEntity<>("Client information is required", HttpStatus.FORBIDDEN);
-        }
-        Client client = clientsRepository.findById(createCourse.getClient().getId()).orElse(null);
-        if (client == null) {
-            return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
         }
 
         Courses course = new Courses();
         course.setName(createCourse.getName());
-        course.setClient(client);
         course.setActive(true);
 
         coursesRepository.save(course);
@@ -85,7 +81,7 @@ public class CoursesServiceImplement implements CoursesService {
     @Transactional
     public ResponseEntity<String> deleteCourses(Long id, Roles roltype) {
 
-        Courses existingCourse = coursesRepository.findById(id).orElse(null);
+        Courses existingCourse = findById(id);
 
         if (existingCourse == null) {
             return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
@@ -103,9 +99,9 @@ public class CoursesServiceImplement implements CoursesService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> updateCourse(CreateCourse createCourse, Roles roltype) {
+    public ResponseEntity<String> updateCourse(CreateCourse createCourse, Roles roltype, Long id) {
 
-        Courses existingCourse = coursesRepository.findById(createCourse.getClient().getId()).orElse(null);
+        Courses existingCourse = findById(id);
         if (existingCourse == null) {
             return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
         }

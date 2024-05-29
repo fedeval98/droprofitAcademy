@@ -33,8 +33,8 @@ public class CoursesController {
     }
 
     @PatchMapping("/courses/update")
-    public ResponseEntity<String> updateCourse(@RequestBody CreateCourse createCourse, Roles roltype) {
-        return coursesService.updateCourse(createCourse, roltype);
+    public ResponseEntity<String> updateCourse(@RequestBody CreateCourse createCourse, Roles roltype, Long id) {
+        return coursesService.updateCourse(createCourse, roltype, id);
     }
 }
 

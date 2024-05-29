@@ -28,5 +28,5 @@ public interface CoursesService {
 
     ResponseEntity<String> deleteCourses(Long id, Roles roltype);
 
-    ResponseEntity<String> updateCourse(CreateCourse createCourse, Roles roltype);
+    ResponseEntity<String> updateCourse(CreateCourse createCourse, Roles roltype, Long id);
 }
