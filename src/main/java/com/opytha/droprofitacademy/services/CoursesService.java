@@ -24,9 +24,9 @@ public interface CoursesService {
 
     Set<CoursesDTO> getAllCoursesDisabled ();
 
-    ResponseEntity<String> createCourse(CreateCourse createCourse, Roles roltype);
+    ResponseEntity<String> createCourse(CreateCourse createCourse, String email);
 
-    ResponseEntity<String> deleteCourses(Long id, Roles roltype);
+    ResponseEntity<String> deleteCourses(Long id, String email);
 
-    ResponseEntity<String> updateCourse(CreateCourse createCourse, Roles roltype, Long id);
+    ResponseEntity<String> updateCourse(CreateCourse createCourse, String email, Long id);
 }

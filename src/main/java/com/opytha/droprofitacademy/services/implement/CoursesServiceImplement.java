@@ -7,6 +7,7 @@ import com.opytha.droprofitacademy.models.Courses;
 import com.opytha.droprofitacademy.models.enums.Roles;
 import com.opytha.droprofitacademy.repositories.ClientsRepository;
 import com.opytha.droprofitacademy.repositories.CoursesRepository;
+import com.opytha.droprofitacademy.services.ClientService;
 import com.opytha.droprofitacademy.services.CoursesService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class CoursesServiceImplement implements CoursesService {
     private CoursesRepository coursesRepository;
 
     @Autowired
-    private ClientsRepository clientsRepository;
+    private ClientService clientService;
 
     @Override
     public Courses findById(Long id) {
@@ -58,9 +59,11 @@ public class CoursesServiceImplement implements CoursesService {
     }
 
     @Override
-    public ResponseEntity<String> createCourse(CreateCourse createCourse, Roles roltype) {
+    public ResponseEntity<String> createCourse(CreateCourse createCourse, String email) {
 
-        if(roltype == Roles.USER){
+        Client client = clientService.findByEmail(email);
+
+        if(client.getRol().equals(Roles.USER)){
             return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
         }
 
@@ -68,18 +71,22 @@ public class CoursesServiceImplement implements CoursesService {
             return new ResponseEntity<>("Name can't be blank", HttpStatus.FORBIDDEN);
         }
 
-        Courses course = new Courses();
-        course.setName(createCourse.getName());
-        course.setActive(true);
+        Courses course = new Courses(createCourse.getName());
 
-        coursesRepository.save(course);
+        saveCourse(course);
 
         return new ResponseEntity<>("Course created successfully", HttpStatus.CREATED);
     }
 
     @Override
     @Transactional
-    public ResponseEntity<String> deleteCourses(Long id, Roles roltype) {
+    public ResponseEntity<String> deleteCourses(Long id, String email) {
+
+        Client client = clientService.findByEmail(email);
+
+        if(client.getRol().equals(Roles.USER)){
+            return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
+        }
 
         Courses existingCourse = findById(id);
 
@@ -99,15 +106,25 @@ public class CoursesServiceImplement implements CoursesService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> updateCourse(CreateCourse createCourse, Roles roltype, Long id) {
+    public ResponseEntity<String> updateCourse(CreateCourse createCourse, String email, Long id) {
+
+        Client client = clientService.findByEmail(email);
+
+        if(client.getRol().equals(Roles.USER)){
+            return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
+        }
 
         Courses existingCourse = findById(id);
         if (existingCourse == null) {
             return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
         }
+
         existingCourse.setName(createCourse.getName());
+
         existingCourse.setActive(createCourse.isActive());
+
         coursesRepository.save(existingCourse);
+
         return new ResponseEntity<>("Course updated successfully", HttpStatus.OK);
     }
 

@@ -7,11 +7,13 @@ import com.opytha.droprofitacademy.models.Client;
 import com.opytha.droprofitacademy.models.Videos;
 import com.opytha.droprofitacademy.models.enums.Roles;
 import com.opytha.droprofitacademy.repositories.VideosRepository;
+import com.opytha.droprofitacademy.services.ClientService;
 import com.opytha.droprofitacademy.services.VideosService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -24,6 +26,9 @@ public class VideosServiceImplement implements VideosService {
 
     @Autowired
     private VideosRepository videosRepository;
+
+    @Autowired
+    private ClientService clientService;
 
     @Override
     public Videos findById(Long id) {
@@ -64,9 +69,11 @@ public class VideosServiceImplement implements VideosService {
     }
 
     @Override
-    public ResponseEntity<String> createVideo (NewVideo newVideo, Roles roltype){
+    public ResponseEntity<String> createVideo (NewVideo newVideo, String email){
 
-        if(roltype == Roles.USER){
+        Client client = clientService.findByEmail(email);
+
+        if(client.getRol().equals(Roles.USER)){
             return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
         }
 
@@ -80,7 +87,6 @@ public class VideosServiceImplement implements VideosService {
             return new ResponseEntity<>("Course can't be blank", HttpStatus.FORBIDDEN);
         }
 
-
         Videos video = new Videos(newVideo.getVideoName(), newVideo.getUrl(), LocalDate.now());
 
         saveVideo(video);
@@ -90,8 +96,11 @@ public class VideosServiceImplement implements VideosService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> updateVideo (NewVideo newVideo, Roles roltype, Long id){
-        if(roltype == Roles.USER){
+    public ResponseEntity<String> updateVideo (NewVideo newVideo, String email, Long id){
+
+        Client client = clientService.findByEmail(email);
+
+        if(client.getRol().equals(Roles.USER)){
             return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
         }
 
@@ -121,7 +130,13 @@ public class VideosServiceImplement implements VideosService {
 
     @Override
     @Transactional
-    public  ResponseEntity<String> removeVideo(Long id, Roles roltype) {
+    public  ResponseEntity<String> removeVideo(Long id, String email) {
+
+        Client client = clientService.findByEmail(email);
+
+        if(client.getRol().equals(Roles.USER)){
+            return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
+        }
 
         Videos video = findById(id);
 
@@ -129,14 +144,9 @@ public class VideosServiceImplement implements VideosService {
             return new ResponseEntity<>("Video not found",HttpStatus.NOT_FOUND);
         }
 
-        if(roltype == Roles.USER){
-                return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
-            }
-
         deleteVideo(id);
 
         return new ResponseEntity<>("Account remove successfully", HttpStatus.OK);
 
     }
-
 }

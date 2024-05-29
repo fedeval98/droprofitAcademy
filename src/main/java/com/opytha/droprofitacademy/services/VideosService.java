@@ -6,6 +6,7 @@ import com.opytha.droprofitacademy.models.Client;
 import com.opytha.droprofitacademy.models.Videos;
 import com.opytha.droprofitacademy.models.enums.Roles;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -26,9 +27,9 @@ public interface VideosService {
 
     ResponseEntity<VideosDTO> getVideo(Long id);
 
-    ResponseEntity<String> createVideo (NewVideo newVideo, Roles roltype);
+    ResponseEntity<String> createVideo (NewVideo newVideo, String email);
 
-    ResponseEntity<String> updateVideo (NewVideo newVideo, Roles roltype, Long id);
+    ResponseEntity<String> updateVideo (NewVideo newVideo, String email, Long id);
 
-    ResponseEntity<String> removeVideo(Long id, Roles roltype);
+    ResponseEntity<String> removeVideo(Long id, String email);
 }

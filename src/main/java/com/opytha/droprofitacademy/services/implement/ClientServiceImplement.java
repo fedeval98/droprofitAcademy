@@ -6,6 +6,7 @@ import com.opytha.droprofitacademy.models.Client;
 import com.opytha.droprofitacademy.models.enums.Roles;
 import com.opytha.droprofitacademy.repositories.ClientsRepository;
 import com.opytha.droprofitacademy.services.ClientService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,21 @@ public class ClientServiceImplement implements ClientService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Override
+    public Client findByEmail(String email){
+        return clientsRepository.findByEmail(email);
+    }
+
+    @Override
+    public Client getAuthClient(String email) {
+        return clientsRepository.findByEmail(email);
+    }
+
+    @Override
+    public ClientDTO getAuthClientDTO(String email) {
+        return new ClientDTO(getAuthClient(email));
+    }
 
     @Override
     public List <Client> getAllClients(){
@@ -94,12 +110,16 @@ public class ClientServiceImplement implements ClientService {
     }
 
     @Override
-    public ResponseEntity<String> findByClientEmailAndId(String email, Long id, Roles roltype) {
-        Client client = clientsRepository.findByEmailAndId(email,id);
+    @Transactional
+    public ResponseEntity<String> removeClient(String email, Long id) {
 
-        if(roltype == Roles.USER){
+        Client auth = clientsRepository.findByEmail(email);
+
+        if(auth.getRol().equals(Roles.USER)){
             return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
         }
+
+        Client client = findById(id);
 
         if (client == null){
             return new ResponseEntity<>("Client not found", HttpStatus.BAD_REQUEST);
@@ -109,7 +129,7 @@ public class ClientServiceImplement implements ClientService {
             return new ResponseEntity<>("Account is already inactive", HttpStatus.OK);
         }
 
-        client.setActive(false);
+        clientsRepository.deleteById(id);
 
         return new ResponseEntity<>("Account remove successfully", HttpStatus.OK);
     }

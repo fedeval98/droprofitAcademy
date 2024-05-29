@@ -6,6 +6,7 @@ import com.opytha.droprofitacademy.models.enums.Roles;
 import com.opytha.droprofitacademy.services.CoursesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -23,18 +24,18 @@ public class CoursesController {
     }
 
     @PostMapping("/courses/create")
-    public ResponseEntity<String> createCourse(@RequestBody CreateCourse createCourse, Roles roltype) {
-        return coursesService.createCourse(createCourse, roltype);
+    public ResponseEntity<String> createCourse(@RequestBody CreateCourse createCourse, Authentication authentication) {
+        return coursesService.createCourse(createCourse, authentication.getName());
     }
 
     @PatchMapping("/courses/delete")
-    public ResponseEntity<String> deleteCourses(Long id, Roles roltype) {
-        return coursesService.deleteCourses(id, roltype);
+    public ResponseEntity<String> deleteCourses(@RequestParam Long id, Authentication authentication) {
+        return coursesService.deleteCourses(id, authentication.getName());
     }
 
     @PatchMapping("/courses/update")
-    public ResponseEntity<String> updateCourse(@RequestBody CreateCourse createCourse, Roles roltype, Long id) {
-        return coursesService.updateCourse(createCourse, roltype, id);
+    public ResponseEntity<String> updateCourse(@RequestBody CreateCourse createCourse, Authentication authentication, @RequestParam Long id) {
+        return coursesService.updateCourse(createCourse, authentication.getName(), id);
     }
 }
 

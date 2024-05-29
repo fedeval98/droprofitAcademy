@@ -7,7 +7,7 @@ public class ClientDTO {
 
     private Long id;
 
-    private String firstName, lastName, email, password;
+    private String firstName, lastName, email;
 
     private Roles rol;
 
@@ -34,10 +34,6 @@ public class ClientDTO {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public Roles getRol() {

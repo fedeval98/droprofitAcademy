@@ -5,12 +5,15 @@ import com.opytha.droprofitacademy.dtos.requests.Register;
 import com.opytha.droprofitacademy.models.Client;
 import com.opytha.droprofitacademy.models.enums.Roles;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
 public interface ClientService {
 
     Client findById (Long id);
+
+    Client findByEmail(String email);
 
     List<Client> getAllClients();
 
@@ -24,6 +27,10 @@ public interface ClientService {
 
     void saveClient(Client client);
 
+    ClientDTO getAuthClientDTO (String email);
+
+    Client getAuthClient(String email);
+
     ResponseEntity<String> createClient(Register newClient);
-    ResponseEntity<String> findByClientEmailAndId(String email, Long id, Roles roltype);
+    ResponseEntity<String> removeClient(String email, Long id);
 }
