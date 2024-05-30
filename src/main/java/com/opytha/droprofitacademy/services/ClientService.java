@@ -32,5 +32,8 @@ public interface ClientService {
     Client getAuthClient(String email);
 
     ResponseEntity<String> createClient(Register newClient);
+
     ResponseEntity<String> removeClient(String email, Long id);
+
+    ResponseEntity<String> addCourseToClient(Long userId, Long CourseId, String email);
 }

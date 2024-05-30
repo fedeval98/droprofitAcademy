@@ -39,4 +39,9 @@ public class ClientController {
         return clientService.removeClient(authentication.getName(), id);
     }
 
+    @PatchMapping("/clients/addCourse")
+    public ResponseEntity<String> addCourseToClient (@RequestParam Long userId, @RequestParam Long CourseId, Authentication authentication){
+        return clientService.addCourseToClient(userId, CourseId, authentication.getName());
+    }
+
 }

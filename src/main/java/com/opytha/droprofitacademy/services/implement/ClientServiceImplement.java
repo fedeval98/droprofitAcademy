@@ -3,17 +3,22 @@ package com.opytha.droprofitacademy.services.implement;
 import com.opytha.droprofitacademy.dtos.ClientDTO;
 import com.opytha.droprofitacademy.dtos.requests.Register;
 import com.opytha.droprofitacademy.models.Client;
+import com.opytha.droprofitacademy.models.Courses;
 import com.opytha.droprofitacademy.models.enums.Roles;
 import com.opytha.droprofitacademy.repositories.ClientsRepository;
+import com.opytha.droprofitacademy.repositories.CoursesRepository;
 import com.opytha.droprofitacademy.services.ClientService;
+import com.opytha.droprofitacademy.services.CoursesService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +31,9 @@ public class ClientServiceImplement implements ClientService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CoursesRepository coursesRepository;
 
     @Override
     public Client findByEmail(String email){
@@ -132,5 +140,35 @@ public class ClientServiceImplement implements ClientService {
         clientsRepository.deleteById(id);
 
         return new ResponseEntity<>("Account remove successfully", HttpStatus.OK);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> addCourseToClient (Long userId, Long CourseId, String email){
+        Client auth = findByEmail(email);
+
+        if(auth.getRol().equals(Roles.USER)){
+            return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
+        }
+
+        Client user = findById(userId);
+
+        if(user == null){
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        if(!user.isActive()){
+            return new ResponseEntity<>("User is disabled", HttpStatus.FORBIDDEN);
+        }
+
+        Courses course = coursesRepository.findById(CourseId).orElse(null);
+
+        if(course == null){
+            return new ResponseEntity<>("Course not found",HttpStatus.NOT_FOUND);
+        }
+
+        user.addCourses(course);
+
+        return new ResponseEntity<>("Course added successfully", HttpStatus.OK);
     }
 }

@@ -19,7 +19,7 @@ public class CoursesController {
     CoursesService coursesService;
 
     @GetMapping("/courses")
-    public Set<CoursesDTO> getAllCourses() {
+    public Set<CoursesDTO> getAllCoursesDTO() {
         return coursesService.getAllCoursesDTO();
     }
 
@@ -36,6 +36,11 @@ public class CoursesController {
     @PatchMapping("/courses/update")
     public ResponseEntity<String> updateCourse(@RequestBody CreateCourse createCourse, Authentication authentication, @RequestParam Long id) {
         return coursesService.updateCourse(createCourse, authentication.getName(), id);
+    }
+
+    @PatchMapping("/courses/addVideos")
+    public ResponseEntity<String> addVideoToCourse(@RequestParam Long videoId, @RequestParam Long CourseId, Authentication authentication){
+        return coursesService.addVideoToCourse(videoId, CourseId, authentication.getName());
     }
 }
 

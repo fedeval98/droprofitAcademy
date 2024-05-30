@@ -11,14 +11,12 @@ public class CoursesDTO {
 
     private Long id;
     private String name;
-    private Client client;
     private Set<VideosDTO> videos;
     private boolean active = true;
 
     public CoursesDTO(Courses courses) {
         id = courses.getId();
         name = courses.getName();
-        client = courses.getClient();
         videos = courses.getVideos().stream().map(VideosDTO::new).collect(Collectors.toSet());
         active = courses.isActive();
     }
@@ -29,10 +27,6 @@ public class CoursesDTO {
 
     public String getName() {
         return name;
-    }
-
-    public Client getClient() {
-        return client;
     }
 
     public Set<VideosDTO> getVideos() {

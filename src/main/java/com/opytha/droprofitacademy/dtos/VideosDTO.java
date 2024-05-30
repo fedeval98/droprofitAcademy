@@ -4,6 +4,7 @@ import com.opytha.droprofitacademy.models.Courses;
 import com.opytha.droprofitacademy.models.Videos;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 public class VideosDTO {
 
@@ -11,14 +12,11 @@ public class VideosDTO {
     private String videoName, url;
     private LocalDate creationDate;
 
-    private Courses course;
-
     public VideosDTO(Videos videos) {
         id = videos.getId();
         videoName = videos.getVideoName();
         url = videos.getUrl();
         creationDate = videos.getCreationDate();
-        course = videos.getCourses();
     }
 
     public Long getId() {

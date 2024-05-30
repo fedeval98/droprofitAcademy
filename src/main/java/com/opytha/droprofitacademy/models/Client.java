@@ -16,6 +16,7 @@ public class Client {
 
     private String firstName, lastName, email, password;
 
+    @Enumerated(EnumType.STRING)
     private Roles rol = Roles.USER;
 
     @OneToMany (mappedBy = "client", fetch = FetchType.EAGER)
