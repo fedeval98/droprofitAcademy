@@ -25,10 +25,10 @@ public class DroprofitAcademyApplication {
 		SpringApplication.run(DroprofitAcademyApplication.class, args);
 	}
 
-/*	@Autowired
+	@Autowired
 	public PasswordEncoder passwordEncoder;
 
-	@Bean
+/*	@Bean
 	public CommandLineRunner initData(ClientsRepository clientsRepository,
 									  CoursesRepository coursesRepository,
 									  VideosRepository videosRepository){
@@ -36,7 +36,9 @@ public class DroprofitAcademyApplication {
 
 			Client fede = new Client("Fede","Val","fede@gmail.com",passwordEncoder.encode("fedeval1"));
 			fede.setRol(Roles.ADMIN);
+
 			clientsRepository.save(fede);
+
 
 			Client user = new Client("User","Val","user@gmail.com",passwordEncoder.encode("userval1"));
 			clientsRepository.save(user);
@@ -58,6 +60,5 @@ public class DroprofitAcademyApplication {
 		};
 	}
 */
-
 
 }

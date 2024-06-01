@@ -24,10 +24,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(authorizeRequest ->
                 authorizeRequest
-                        .requestMatchers(HttpMethod.GET ,"/api/courses/All").permitAll()
-                        .requestMatchers(HttpMethod.POST ,"/api/courses/create").permitAll()
-                        .requestMatchers(HttpMethod.PATCH ,"/api/courses/delete").permitAll()
-                        .anyRequest().permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/clients/register","/api/login").permitAll()
+                        .requestMatchers("/api/logout").permitAll()
+                        .requestMatchers(HttpMethod.GET ,"/api/clients/{id}","/api/courses","/api/videos").hasAnyAuthority("CLIENT","ADMIN")
+                        .requestMatchers(HttpMethod.GET ,"/api/clients").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST ,"/api/courses/create","/api/videos/create").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH ,"/api/clients/addCourse","/api/courses/update","/api/courses/delete","/api/courses/addVideos","/api/videos/update").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/videos/remove","api/clients/remove").hasAuthority("ADMIN")
+                        .anyRequest().denyAll()
         );
 
         http.csrf(AbstractHttpConfigurer::disable);

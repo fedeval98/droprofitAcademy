@@ -67,7 +67,7 @@ public class CoursesServiceImplement implements CoursesService {
         }
 
         if(createCourse.getName().isBlank()){
-            return new ResponseEntity<>("Name can't be blank", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Course name can't be blank", HttpStatus.FORBIDDEN);
         }
 
         Courses course = new Courses(createCourse.getName());

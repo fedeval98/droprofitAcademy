@@ -146,7 +146,7 @@ public class VideosServiceImplement implements VideosService {
 
         deleteVideo(id);
 
-        return new ResponseEntity<>("Account remove successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Video remove successfully", HttpStatus.OK);
 
     }
 }

@@ -114,7 +114,7 @@ public class ClientServiceImplement implements ClientService {
 
         saveClient(client);
 
-        return new ResponseEntity<>("Client and account created", HttpStatus.CREATED);
+        return new ResponseEntity<>("Client created successfully", HttpStatus.CREATED);
     }
 
     @Override
@@ -134,12 +134,12 @@ public class ClientServiceImplement implements ClientService {
         }
 
         if(!client.isActive()){
-            return new ResponseEntity<>("Account is already inactive", HttpStatus.OK);
+            return new ResponseEntity<>("Client is already inactive", HttpStatus.OK);
         }
 
         clientsRepository.deleteById(id);
 
-        return new ResponseEntity<>("Account remove successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Client remove successfully", HttpStatus.OK);
     }
 
     @Override
