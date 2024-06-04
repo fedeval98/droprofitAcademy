@@ -27,6 +27,8 @@ public interface ClientService {
 
     void saveClient(Client client);
 
+    boolean existsByUserID(int uid);
+
     ClientDTO getAuthClientDTO (String email);
 
     Client getAuthClient(String email);

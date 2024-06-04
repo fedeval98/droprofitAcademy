@@ -40,7 +40,7 @@ public class SecurityConfig {
                 HeadersConfigurer.FrameOptionsConfig::disable));
 
          http.formLogin(formLogin -> formLogin
-                .loginPage("/login")
+                .loginPage("/index.html")
                 .loginProcessingUrl("/api/login")
                 .usernameParameter("email")
                 .passwordParameter("password")

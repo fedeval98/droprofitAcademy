@@ -9,6 +9,7 @@ import com.opytha.droprofitacademy.repositories.ClientsRepository;
 import com.opytha.droprofitacademy.repositories.CoursesRepository;
 import com.opytha.droprofitacademy.services.ClientService;
 import com.opytha.droprofitacademy.services.CoursesService;
+import com.opytha.droprofitacademy.utils.UserID;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,8 +21,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.opytha.droprofitacademy.utils.UserID.getAccountNumber;
 
 @Service
 public class ClientServiceImplement implements ClientService {
@@ -81,6 +85,11 @@ public class ClientServiceImplement implements ClientService {
     }
 
     @Override
+    public boolean existsByUserID(int uid) {
+        return clientsRepository.existsByUserID(uid);
+    }
+
+    @Override
     public ResponseEntity<ClientDTO> getClient(Long id){
         ClientDTO clientDTO = getClientById(id);
 
@@ -110,7 +119,12 @@ public class ClientServiceImplement implements ClientService {
             return new ResponseEntity<>("Email already on use", HttpStatus.FORBIDDEN);
         }
 
-        Client client = new Client(newClient.getFirstName(),newClient.getLastName(),newClient.getEmail(), passwordEncoder.encode(newClient.getPassword()));
+        int uid;
+        do {
+            uid = getAccountNumber(0000000000, 2147483647);
+        }while (existsByUserID(uid));
+
+        Client client = new Client(newClient.getFirstName(),newClient.getLastName(),newClient.getEmail(), passwordEncoder.encode(newClient.getPassword()),uid);
 
         saveClient(client);
 

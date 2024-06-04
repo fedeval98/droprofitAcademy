@@ -10,4 +10,6 @@ public interface ClientsRepository extends JpaRepository<Client,Long> {
 
     boolean existsByEmail(String email);
 
+    boolean existsByUserID(int uid);
+
 }

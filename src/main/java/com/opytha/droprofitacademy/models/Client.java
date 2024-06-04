@@ -16,6 +16,8 @@ public class Client {
 
     private String firstName, lastName, email, password;
 
+    private int userID;
+
     @Enumerated(EnumType.STRING)
     private Roles rol = Roles.USER;
 
@@ -28,10 +30,11 @@ public class Client {
 
     }
 
-    public Client(String firstName, String lastName, String email, String password) {
+    public Client(String firstName, String lastName, String email, String password, int uid) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.userID = uid;
         this.password = password;;
     }
 
@@ -86,6 +89,14 @@ public class Client {
 
     public Set<Courses> getCourses() {
         return courses;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public boolean isActive() {

@@ -17,6 +17,8 @@ public class ClientDTO {
 
     private String firstName, lastName, email;
 
+    private int uid;
+
     private Roles rol;
 
     private Set<CoursesDTO> courses;
@@ -24,6 +26,7 @@ public class ClientDTO {
 
     public ClientDTO(Client client) {
         id = client.getId();
+        uid = client.getUserID();
         firstName = client.getFirstName();
         lastName = client.getLastName();
         email = client.getEmail();
@@ -33,6 +36,10 @@ public class ClientDTO {
 
     public Long getId() {
         return id;
+    }
+
+    public int getUid() {
+        return uid;
     }
 
     public String getFirstName() {

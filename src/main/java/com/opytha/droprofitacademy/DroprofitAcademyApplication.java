@@ -7,6 +7,7 @@ import com.opytha.droprofitacademy.models.enums.Roles;
 import com.opytha.droprofitacademy.repositories.ClientsRepository;
 import com.opytha.droprofitacademy.repositories.CoursesRepository;
 import com.opytha.droprofitacademy.repositories.VideosRepository;
+import com.opytha.droprofitacademy.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 
+import static com.opytha.droprofitacademy.utils.UserID.getAccountNumber;
+
 @SpringBootApplication
 @PropertySource("classpath:.env")
 public class DroprofitAcademyApplication {
@@ -25,22 +28,37 @@ public class DroprofitAcademyApplication {
 		SpringApplication.run(DroprofitAcademyApplication.class, args);
 	}
 
+/*
 	@Autowired
 	public PasswordEncoder passwordEncoder;
 
-/*	@Bean
+	@Autowired
+	public ClientService clientService;
+
+	@Bean
 	public CommandLineRunner initData(ClientsRepository clientsRepository,
 									  CoursesRepository coursesRepository,
 									  VideosRepository videosRepository){
 		return args -> {
 
-			Client fede = new Client("Fede","Val","fede@gmail.com",passwordEncoder.encode("fedeval1"));
+
+
+			int uid;
+			do {
+				uid = getAccountNumber(0000000000, 2147483647);
+			}while (clientService.existsByUserID(uid));
+
+			Client fede = new Client("Fede","Val","fede@gmail.com",passwordEncoder.encode("fedeval1"),uid);
 			fede.setRol(Roles.ADMIN);
 
 			clientsRepository.save(fede);
 
+			int uid2;
+			do {
+				uid2 = getAccountNumber(0000000000, 2147483647);
+			}while (clientService.existsByUserID(uid2));
 
-			Client user = new Client("User","Val","user@gmail.com",passwordEncoder.encode("userval1"));
+			Client user = new Client("User","Val","user@gmail.com",passwordEncoder.encode("userval1"), uid2);
 			clientsRepository.save(user);
 
 			Courses java = new Courses("Java");
