@@ -61,7 +61,7 @@ public class DroprofitAcademyApplication {
 			Client user = new Client("User","Val","user@gmail.com",passwordEncoder.encode("userval1"), uid2);
 			clientsRepository.save(user);
 
-			Courses java = new Courses("Java");
+			Courses java = new Courses("Java","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhJ1q8FCawqSMga5idNmDn4YOuIxtkxizBtA&s");
 
 			Videos introJava = new Videos("Introduccion a Java", "https://www.youtube.com/watch?v=STVXkRO4LZY", LocalDate.now());
 

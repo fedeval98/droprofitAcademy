@@ -5,12 +5,16 @@ import com.opytha.droprofitacademy.models.Courses;
 
 public class CreateCourse {
 
-    private String name;
+    private String name, img;
     private boolean active = true;
 
 
     public String getName() {
         return name;
+    }
+
+    public String getImg() {
+        return img;
     }
 
     public boolean isActive() {

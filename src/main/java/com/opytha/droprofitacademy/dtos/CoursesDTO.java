@@ -10,13 +10,14 @@ import java.util.stream.Collectors;
 public class CoursesDTO {
 
     private Long id;
-    private String name;
+    private String name,img;
     private Set<VideosDTO> videos;
     private boolean active = true;
 
     public CoursesDTO(Courses courses) {
         id = courses.getId();
         name = courses.getName();
+        img = courses.getImg();
         videos = courses.getVideos().stream().map(VideosDTO::new).collect(Collectors.toSet());
         active = courses.isActive();
     }
@@ -27,6 +28,10 @@ public class CoursesDTO {
 
     public String getName() {
         return name;
+    }
+
+    public String getImg() {
+        return img;
     }
 
     public Set<VideosDTO> getVideos() {

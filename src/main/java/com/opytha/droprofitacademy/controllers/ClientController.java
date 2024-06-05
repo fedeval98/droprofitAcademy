@@ -40,7 +40,7 @@ public class ClientController {
     }
 
     @PatchMapping("/clients/addCourse")
-    public ResponseEntity<String> addCourseToClient (@RequestParam Long userId, @RequestParam Long CourseId, Authentication authentication){
+    public ResponseEntity<String> addCourseToClient (@RequestParam int userId, @RequestParam Long CourseId, Authentication authentication){
         return clientService.addCourseToClient(userId, CourseId, authentication.getName());
     }
 

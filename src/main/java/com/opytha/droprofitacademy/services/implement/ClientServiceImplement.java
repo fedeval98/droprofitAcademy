@@ -90,6 +90,11 @@ public class ClientServiceImplement implements ClientService {
     }
 
     @Override
+    public Client findByUserID(int uid) {
+        return clientsRepository.findByUserID(uid);
+    }
+
+    @Override
     public ResponseEntity<ClientDTO> getClient(Long id){
         ClientDTO clientDTO = getClientById(id);
 
@@ -158,14 +163,14 @@ public class ClientServiceImplement implements ClientService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> addCourseToClient (Long userId, Long CourseId, String email){
+    public ResponseEntity<String> addCourseToClient (int userId, Long CourseId, String email){
         Client auth = findByEmail(email);
 
         if(auth.getRol().equals(Roles.USER)){
             return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
         }
 
-        Client user = findById(userId);
+        Client user = findByUserID(userId);
 
         if(user == null){
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);

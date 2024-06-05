@@ -25,9 +25,11 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorizeRequest ->
                 authorizeRequest
                         .requestMatchers(HttpMethod.POST,"/api/clients/register","/api/login").permitAll()
-                        .requestMatchers("/api/logout").permitAll()
-                        .requestMatchers(HttpMethod.GET ,"/api/clients/{id}","/api/courses","/api/videos").hasAnyAuthority("CLIENT","ADMIN")
-                        .requestMatchers(HttpMethod.GET ,"/api/clients").hasAuthority("ADMIN")
+                        .requestMatchers("/api/logout","/public/**","index.html").permitAll()
+                        .requestMatchers("/web/assets/img/**","/web/assets/html/**","/web/assets/js/**").hasAnyAuthority("CLIENT","ADMIN")
+                        .requestMatchers("/web/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET ,"/api/clients/current","/api/courses","/api/videos").hasAnyAuthority("CLIENT","ADMIN")
+                        .requestMatchers(HttpMethod.GET ,"/api/clients","/api/clients/{id}").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST ,"/api/courses/create","/api/videos/create").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PATCH ,"/api/clients/addCourse","/api/courses/update","/api/courses/delete","/api/courses/addVideos","/api/videos/update").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/api/videos/remove","api/clients/remove").hasAuthority("ADMIN")

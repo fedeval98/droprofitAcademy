@@ -70,7 +70,11 @@ public class CoursesServiceImplement implements CoursesService {
             return new ResponseEntity<>("Course name can't be blank", HttpStatus.FORBIDDEN);
         }
 
-        Courses course = new Courses(createCourse.getName());
+        if(createCourse.getImg().isBlank()){
+            return new ResponseEntity<>("Course image can't be blank", HttpStatus.FORBIDDEN);
+        }
+
+        Courses course = new Courses(createCourse.getName(), createCourse.getImg());
 
         saveCourse(course);
 
@@ -119,6 +123,8 @@ public class CoursesServiceImplement implements CoursesService {
         }
 
         existingCourse.setName(createCourse.getName());
+
+        existingCourse.setImg(createCourse.getImg());
 
         existingCourse.setActive(createCourse.isActive());
 

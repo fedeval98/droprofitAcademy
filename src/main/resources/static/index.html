@@ -1,25 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="./public/logo.png" type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <title>Log in | Droprofit Academy</title>
 </head>
-<body>
-  <div id="app" class="h-screen w-full md:bg-[url('./public/background.jpg')] md:bg-cover md:bg-no-repeat bg-center">
-    <div>
-      <div class="bg-black">
-        <picture class="flex justify-center items-center p-4 gap-2">
-          <img class="w-20 text-center" src="./public/logo.png" alt="Droprofit Logo">
-          <img class="w-48 text-center" src="./public/logo_text.png" alt="">
-        </picture>
-      </div>
-      <div>
-        
-      </div>
 
+<body>
+  <div id="app" class="h-screen w-full md:bg-[url('./public/background.jpg')] md:bg-cover md:bg-no-repeat bg-center md:flex md:justify-center md:items-center">
+    <div class="md:bg-white md:w-[70%] md:h-[450px] md:rounded-2xl md:shadow-btmright lg:w-[60%]">
+        <div class="bg-black md:rounded-t-2xl md:flex md:justify-center md:items-center">
+          <picture class="flex flex-col justify-center items-center p-4 gap-6 md:flex-row">
+            <img class="w-24 text-center" src="./public/logo.png" alt="Droprofit Logo">
+            <img class="w-56 text-center" src="./public/logo_text.png" alt="">
+          </picture>
+        </div>
+        <div class="pt-10">
+          <div class="flex justify-center items-center h-full">
+            <div class="flex flex-col gap-8 w-[90%] h-full">
+              <input class="border border-black h-12 rounded-full px-4 text-lg" type="text" name="email"
+                @input="updateEmail" :value="email" id="email" placeholder="E-mail" autocomplete="email">
+              <div class="w-full ">
+                <input class="border border-black h-12 rounded-full px-4 text-lg w-full id_password" type="password"
+                  name="password" @input="updatePassword" :value="password" id="password" placeholder="Contraseña"
+                  autocomplete="password">
+                <i class="far fa-eye cursor-pointer mx-2 relative left-[84%] md:left-[90%] -top-7 transform -translate-y-1/2 togglePassword"
+                  @click="togglePasswordVisibility()"></i>
+              </div>
+              <button class="w-full bg-blue-600 h-12 text-white font-bold text-xl rounded-full"
+                @click.prevent="login">Ingresar</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- MODAL WIP -->
+    <div v-show="modalVisibleAlert"
+      class="bg-gray-400/40 fixed top-0 left-0 w-full h-full flex items-center justify-center z-40">
+      <section class="bg-white text-black w-[320px] h-[440px] rounded-2xl p-2 flex flex-col relative">
+        <div class="h-full">
+          <button class="" @click="cerrarAlert()">
+            <img src="./public/hambClose.webp"
+              class="w-12 h-12  cursor-pointer absolute top-2 right-2 z-20 rounded-full bg-black p-2" alt="">
+          </button>
+          <div class="flex flex-col h-full text-center justify-center items-center absolute top-0 inset-0">
+            <picture class="h-full w-full flex justify-center items-center object-contain">
+              <img class="w-[280px] h-[280px] object-contain" src="./public/work-in-progress.webp"
+                alt="work_in_progress">
+            </picture>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- MODAL NOT REGISTERED -->
+    <div v-show="modalRegistered"
+      class="bg-gray-400/40 fixed top-0 left-0 w-full h-full flex items-center justify-center z-40">
+      <section class="bg-white text-black w-[320px] h-[440px] rounded-2xl p-2 flex flex-col relative">
+        <div class="h-full">
+          <button class="" @click="cerrarModalRegistered()">
+            <img src="./public/hambClose.webp"
+              class="w-12 h-12  cursor-pointer absolute top-2 right-2 z-20 rounded-full bg-black p-2" alt="">
+          </button>
+          <div class="flex flex-col h-full text-center justify-center items-center absolute top-0 inset-0 gap-8">
+            <h3 class="text-2xl font-bold">Usted no se encuentra registrado en la plataforma..</h3>
+            <h3>Porfavor, registre su cuenta.</h3>
+            <button @click="closeModalandSignUp"
+              class="bg-blue-600 p-4 rounded-full m-2 font-bold text-lg text-white">Cerrar</button>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -27,4 +79,5 @@
   <script src="./public/tailwind.config.js"></script>
   <script src="./public/login.js"></script>
 </body>
+
 </html>

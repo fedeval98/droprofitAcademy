@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="../../../public/logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Home | Droprofit Academy</title>
+</head>
+
+<body class="w-screen h-dvh">
+  <div id="app" class="flex flex-col w-full h-full">
+    <header class="bg-black">
+      <picture class="flex justify-center items-center py-4">
+        <img src="../../../public/logo_text.png" alt="Droprofit Academy">
+      </picture>
+
+    </header>
+    <main class="flex-grow bg-white overflow-auto">
+      <article class="pt-2">
+        <h1 class="hidden">Inicio</h1>
+      </article>
+      <p class="my-4 font-bold w-full text-center">UserID: {{userID}}</p>
+      <div class="flex flex-wrap gap-8 w-full justify-center items-center">
+      <template v-for="courses in allcourses">
+        <article class="w-[300px] mx-2 border border-black rounded-xl p-4 shadow-centershadow bg-black my-4 text-logoteal hover:scale-4 hover:shadow-colorshadow">
+          <a class="flex flex-col gap-4 " href="">
+            <h2 class="font-bold text-2xl text-center">{{courses.name}}</h2>
+            <picture>
+              <img class="h-[150px]" :src="courses.img" alt="Curso de {{courses.name}}">
+            </picture>
+          </a>
+        </article>
+      </template>
+      </div>
+      
+    </main>
+    <footer class="bg-black h-20 py-4 flex items-center">
+      <nav class="w-full">
+        <ul class="flex justify-around items-center">
+          <li class="flex flex-col justify-around items-center">
+            <a class="flex flex-col justify-around items-center" href="#">
+              <picture>
+                <img class="h-8" src="../img/home.png" alt="home page">
+              </picture>
+              <p class="text-logoteal">Inicio</p>
+            </a>
+          </li>
+          <li class="flex flex-col justify-around items-center">
+            <picture class="relative bottom-1 left-2">
+              <img class="h-12" src="../../../public/logo.png" alt="">
+            </picture>
+          </li>
+          <li class="flex flex-col justify-around items-center">
+            <a class="flex flex-col justify-around items-center" href="#">
+              <picture class="">
+                <img class="h-8" src="../img/online-learning_blank.png" alt="">
+              </picture>
+              <p class="text-white">Cursos</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </footer>
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="../../../public/tailwind.config.js"></script>
+  <script src="../js/home.js"></script>
+</body>
+
+</html>

@@ -12,7 +12,7 @@ public class Courses {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String name, img;
 
     @ManyToOne
     private Client client;
@@ -25,8 +25,10 @@ public class Courses {
     public Courses() {
     }
 
-    public Courses(String name) {
+    public Courses(String name, String img) {
+
         this.name = name;
+        this.img = img;
     }
 
     public void addVideos(Videos videos){
@@ -44,6 +46,14 @@ public class Courses {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public Client getClient() {

@@ -29,6 +29,8 @@ public interface ClientService {
 
     boolean existsByUserID(int uid);
 
+    Client findByUserID(int uid);
+
     ClientDTO getAuthClientDTO (String email);
 
     Client getAuthClient(String email);
@@ -37,5 +39,5 @@ public interface ClientService {
 
     ResponseEntity<String> removeClient(String email, Long id);
 
-    ResponseEntity<String> addCourseToClient(Long userId, Long CourseId, String email);
+    ResponseEntity<String> addCourseToClient(int userId, Long CourseId, String email);
 }
