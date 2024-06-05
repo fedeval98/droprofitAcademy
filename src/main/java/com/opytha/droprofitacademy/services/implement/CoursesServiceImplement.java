@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.management.relation.Role;
 import java.util.List;
@@ -37,6 +38,14 @@ public class CoursesServiceImplement implements CoursesService {
     @Override
     public Courses findById(Long id) {
         return coursesRepository.findById(id).orElse(null);
+    }
+    public CoursesDTO findByIdDTO(Long id) {
+        return coursesRepository.findById(id).map(CoursesDTO::new).orElse(null);
+    }
+
+    @Override
+    public CoursesDTO getCourse(Long id) {
+        return findByIdDTO(id);
     }
 
     @Override

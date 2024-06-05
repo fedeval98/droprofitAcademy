@@ -5,8 +5,10 @@ import com.opytha.droprofitacademy.dtos.requests.CreateCourse;
 import com.opytha.droprofitacademy.models.Courses;
 import com.opytha.droprofitacademy.models.Videos;
 import com.opytha.droprofitacademy.models.enums.Roles;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,6 +23,8 @@ public interface CoursesService {
 
     void saveCourse(Courses courses);
 
+    CoursesDTO getCourse(Long id);
+
     List<Courses> getAllCourses ();
 
     Set<CoursesDTO> getAllCoursesDTO ();
@@ -32,4 +36,5 @@ public interface CoursesService {
     ResponseEntity<String> updateCourse(CreateCourse createCourse, String email, Long id);
 
     ResponseEntity<String> addVideoToCourse(Long videoId, Long CourseId, String email);
+
 }
