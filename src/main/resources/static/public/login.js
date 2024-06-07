@@ -47,7 +47,7 @@ const options = {
             if(this.password =="admin"&&this.email=="admin@admin.com"){
               window.open("./web/admin/create-loan.html")
             }else if(response.status.toString().startsWith('2')){
-              window.location.href="../web/assets/html/home.html"
+              window.location.href="../web/assets/html/inicio.html"
           }
           this.clearData()
           

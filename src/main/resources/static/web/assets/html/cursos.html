@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="../../../public/logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Home | Droprofit Academy</title>
+</head>
+
+<body class="w-screen h-dvh">
+  <div id="app" class="flex flex-col w-full h-full">
+    <header class="bg-black lg:flex lg:items-center lg:justify-around">
+      <picture class="flex justify-center lg:justify-between items-center py-4">
+        <img v-if="isWideScreen" class="h-[96px] mx-6" src="../../../public/logo.png" alt="Droprofit Academy logo">
+        <img src="../../../public/logo_text.png" alt="Droprofit Academy">
+      </picture>
+      <!-- NAVEGADOR PARA >1024 SCREEN -->
+      <nav v-if="isWideScreen" class="w-1/3">
+        <ul class="flex justify-center gap-16 items-center">
+          <li class="flex flex-col justify-around items-center">
+            <a class="flex flex-col justify-around items-center" href="./inicio.html">
+              <picture>
+                <img class="h-12" src="../img/home_blank.png" alt="Pagina de inicio">
+              </picture>
+              <p class="text-white">Inicio</p>
+            </a>
+          </li>
+          <li class="flex flex-col justify-around items-center">
+            <a class="flex flex-col justify-around items-center" href="#">
+              <picture class="">
+                <img class="h-12" src="../img/online-learning_blank.png" alt="Pagina de cursos">
+              </picture>
+              <p class="text-white">Cursos</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="flex flex-grow bg-white overflow-auto flex-col justify-center items-center">
+      <article>
+        <h1 class="hidden">Inicio</h1>
+      </article>
+      <p class="my-2 font-bold w-full text-center">UserID: {{userID}}</p>
+      <!-- CONTENEDOR DEL MOLDE PARA LOS VIDEOS  <1024-->
+      <div v-if="!isWideScreen" class="flex items-center justify-center w-full h-[90%]">
+        <!-- MOLDE PARA FORMATEAR CONTENIDO DE LISTA Y VIDEOS -->
+        <article class="flex flex-col bg-black justify-center items-center text-white h-full w-full">
+          <!-- CONTENEDOR DE LISTA DE VIDEOS -->
+          <h2 class="text-center w-full font-bold text-2xl">{{course.name}}</h2>
+          <div class="w-full flex items-center text-white bg-black h-3/6 overflow-x-auto md:w-[680px] lg:w-1/6 lg:h-full">
+            <div class="flex flex-nowrap gap-4 items-center lg:flex-none">
+              <template v-for="(video, index) in allvideos">
+                <article class="text-center border-2 border-white flex flex-col h-24 justify-center items-center w-[150px]" @click="catchCourseID(video.id)">
+                  <h3 class="w-full">{{index + 1}}.</h3>
+                  <h3 class="w-full">{{video.videoName}}</h3>
+                </article>
+              </template>
+            </div>
+          </div>
+          <!-- CONTENEDOR DE VIDEOS -->
+          <iframe v-if="showVideo != '' " class="w-full h-3/6 lg:w-5/6 lg:h-full bg-gray-600" :src="showVideo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <!-- DIV POR SI NO EXISTEN VIDEOS -->
+          <div v-else class="w-5/6 h-full bg-black text-white font-bold text-3xl flex flex-col justify-center items-center">
+            <p> Bienvenido a la seccion de videos.</p>
+            <p> Seleccione un video en la lista para verlo.</p>
+          </div>
+        </article>
+        
+        
+      </div>
+      <!-- CONTENEDOR DEL MOLDE PARA LOS VIDEOS  >1024-->
+      <div v-if="isWideScreen" class="flex items-center justify-center w-full h-[90%]">
+        <!-- MOLDE PARA FORMATEAR CONTENIDO DE LISTA Y VIDEOS -->
+        <article class="w-full h-full bg-black text-white flex items-center gap-2">
+          <!-- CONTENEDOR DE LISTA DE VIDEOS -->
+          <div class="bg-black flex flex-col h-full w-1/6 gap-2 overflow-y-auto">
+            <h2 class="text-center font-bold text-2xl">{{course.name}}</h2>
+            <template v-for="(video, index) in allvideos">
+              <article class="text-center border-2 border-white flex"
+                @click="catchCourseID(video.id)">
+                <h3 class="w-1/5">{{index + 1}}.</h3>
+                <h3 class="w-4/5">{{video.videoName}}</h3>
+              </article>
+            </template>
+          </div>
+          <!-- CONTENEDOR DE VIDEOS -->
+          <iframe v-if="showVideo != '' " class="bg-gray-600 w-5/6 h-full" :src="showVideo" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <!-- DIV POR SI NO EXISTEN VIDEOS -->
+          <div v-else
+            class="bg-black text-white font-bold text-3xl w-5/6 flex flex-col justify-center items-center">
+            <p> Bienvenido a la seccion de videos.</p>
+            <p> Seleccione un video en la lista para verlo.</p>
+          </div>
+        </article>
+      </div>
+    </main>
+    <footer class="bg-black h-20 flex items-center">
+      <!-- NAVEGADOR PARA MOBILE -->
+      <nav v-if="!isWideScreen" class="w-full">
+        <ul class="flex justify-around items-center">
+          <li class="flex flex-col justify-around items-center">
+            <a class="flex flex-col justify-around items-center" href="./inicio.html">
+              <picture>
+                <img class="h-8" src="../img/home_blank.png" alt="home page">
+              </picture>
+              <p class="text-white">Inicio</p>
+            </a>
+          </li>
+          <li class="flex flex-col justify-around items-center">
+            <picture class="relative bottom-1 left-2">
+              <img class="h-12" src="../../../public/logo.png" alt="Droprofit Academy logo">
+            </picture>
+          </li>
+          <li class="flex flex-col justify-around items-center">
+            <a class="flex flex-col justify-around items-center" href="#">
+              <picture class="">
+                <img class="h-8" src="../img/online-learning_blank.png" alt="">
+              </picture>
+              <p class="text-white">Cursos</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- FOOTER >1024 SCREEN -->
+      <div v-if="isWideScreen" class="text-logoteal flex bg-black font-bold justify-around items-center w-full">
+        <small>&copy; 2024 Droprofit Academy. All rights reserved.</small>
+        <small class="hover:text-white"><a
+            href="mailto:DroprofitAcademy@gmail.com">DroprofitAcademy@gmail.com</a></small>
+      </div>
+    </footer>
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="../../../public/tailwind.config.js"></script>
+  <script src="../js/cursos.js"></script>
+</body>
+</html>
