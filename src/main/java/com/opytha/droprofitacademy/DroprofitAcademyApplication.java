@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import static com.opytha.droprofitacademy.utils.UserID.getAccountNumber;
 
 @SpringBootApplication
-//@PropertySource("classpath:.env")
+@PropertySource("classpath:.env")
 public class DroprofitAcademyApplication {
 
 	public static void main(String[] args) {
