@@ -18,7 +18,7 @@
         <img src="../../../public/logo_text.png" alt="Droprofit Academy">
       </picture>
       <!-- NAVEGADOR PARA >1024 SCREEN -->
-      <nav v-if="isWideScreen" class="w-1/3">
+      <!-- <nav v-if="isWideScreen" class="w-1/3">
         <ul class="flex justify-center gap-16 items-center">
           <li class="flex flex-col justify-around items-center">
             <a class="flex flex-col justify-around items-center" href="#">
@@ -37,7 +37,7 @@
             </a>
           </li>
         </ul>
-      </nav>
+      </nav> -->
     </header>
     <main class="flex-grow bg-white overflow-auto">
       <article class="pt-2">
@@ -48,7 +48,7 @@
         <template v-for="course in allcourses">
           <article
             class="w-[300px] mx-2 border border-black rounded-xl p-4 shadow-centershadow bg-black my-4 text-logoteal hover:scale-4 hover:shadow-colorshadow">
-            <a class="flex flex-col gap-4 " :href="'./cursos.html?id='+course.id">
+            <a class="flex flex-col gap-4 " :href="'./videos.html?id='+course.id">
               <h2 class="font-bold text-2xl text-center">{{course.name}}</h2>
               <picture>
                 <img class="h-[150px]" :src="course.img" alt="Curso de {{course.name}}">
@@ -60,7 +60,7 @@
     </main>
     <footer class="bg-black h-20 py-4 flex items-center">
       <!-- NAVEGADOR PARA MOBILE -->
-      <nav v-if="!isWideScreen" class="w-full">
+      <!-- <nav v-if="!isWideScreen" class="w-full">
         <ul class="flex justify-around items-center">
           <li class="flex flex-col justify-around items-center">
             <a class="flex flex-col justify-around items-center" href="#">
@@ -84,7 +84,7 @@
             </a>
           </li>
         </ul>
-      </nav>
+      </nav> -->
       <!-- FOOTER >1024 SCREEN -->
       <div v-if="isWideScreen" class="text-logoteal flex bg-black font-bold justify-around items-center w-full">
         <small>&copy; 2024 Droprofit Academy. All rights reserved.</small>

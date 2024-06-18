@@ -37,7 +37,7 @@ public interface ClientService {
 
     ResponseEntity<String> createClient(Register newClient);
 
-    ResponseEntity<String> removeClient(String email, Long id);
+    ResponseEntity<String> removeClient(String email, int id);
 
-    ResponseEntity<String> addCourseToClient(int userId, Long CourseId, String email);
+    ResponseEntity<String> addCourseToClient(String userIdStr, Long CourseId, String email);
 }

@@ -27,7 +27,7 @@ const options = {
     axios.get(CLIENT)
     .then(data => {
       this.userID = data.data.uid
-      this.allcourses = data.data.courses.sort((a,b)=> a.id - b.id)
+      this.allcourses = data.data.courses.filter(course => course.active == true ).sort((a,b)=> a.id - b.id)
       console.log(data)
       console.log(this.allcourses)
       console.log(this.userID)

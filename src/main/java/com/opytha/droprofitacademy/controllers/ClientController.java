@@ -35,13 +35,13 @@ public class ClientController {
     }
 
     @DeleteMapping("/clients/remove")
-    public ResponseEntity<String> removeClient ( @RequestParam Long id, Authentication authentication){
+    public ResponseEntity<String> removeClient ( @RequestParam int id, Authentication authentication){
         return clientService.removeClient(authentication.getName(), id);
     }
 
     @PatchMapping("/clients/addCourse")
-    public ResponseEntity<String> addCourseToClient (@RequestParam int userId, @RequestParam Long CourseId, Authentication authentication){
-        return clientService.addCourseToClient(userId, CourseId, authentication.getName());
+    public ResponseEntity<String> addCourseToClient (@RequestParam(value = "userId", required = false) String userIdStr, @RequestParam Long CourseId, Authentication authentication){
+        return clientService.addCourseToClient(userIdStr, CourseId, authentication.getName());
     }
 
 }

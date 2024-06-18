@@ -4,10 +4,13 @@ import com.opytha.droprofitacademy.dtos.ClientDTO;
 import com.opytha.droprofitacademy.dtos.VideosDTO;
 import com.opytha.droprofitacademy.dtos.requests.NewVideo;
 import com.opytha.droprofitacademy.models.Client;
+import com.opytha.droprofitacademy.models.Courses;
 import com.opytha.droprofitacademy.models.Videos;
 import com.opytha.droprofitacademy.models.enums.Roles;
+import com.opytha.droprofitacademy.repositories.CoursesRepository;
 import com.opytha.droprofitacademy.repositories.VideosRepository;
 import com.opytha.droprofitacademy.services.ClientService;
+import com.opytha.droprofitacademy.services.CoursesService;
 import com.opytha.droprofitacademy.services.VideosService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,9 @@ public class VideosServiceImplement implements VideosService {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private CoursesRepository coursesRepository;
 
     @Override
     public Videos findById(Long id) {
@@ -83,9 +89,6 @@ public class VideosServiceImplement implements VideosService {
         if(newVideo.getUrl().isBlank()){
             return new ResponseEntity<>("URL can't be blank", HttpStatus.FORBIDDEN);
         }
-        if(newVideo.getCourses().getId() == null){
-            return new ResponseEntity<>("Course can't be blank", HttpStatus.FORBIDDEN);
-        }
 
         Videos video = new Videos(newVideo.getVideoName(), newVideo.getUrl(), LocalDate.now());
 
@@ -115,13 +118,20 @@ public class VideosServiceImplement implements VideosService {
         if(newVideo.getUrl().isBlank()){
             return new ResponseEntity<>("URL can't be blank", HttpStatus.FORBIDDEN);
         }
+
         if(newVideo.getCourses().getId() == null){
             return new ResponseEntity<>("Course can't be blank", HttpStatus.FORBIDDEN);
         }
 
+        Courses course = coursesRepository.findById(newVideo.getCourses().getId()).orElse(null);
+
+        if(course.getId() == null){
+            return new ResponseEntity<>("Course not found", HttpStatus.FORBIDDEN);
+        }
+
         video.setVideoName(newVideo.getVideoName());
         video.setUrl(newVideo.getUrl());
-        video.setCourses(newVideo.getCourses());
+        course.addVideos(video);
 
         saveVideo(video);
 

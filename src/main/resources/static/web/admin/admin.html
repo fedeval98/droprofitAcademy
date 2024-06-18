@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="../../public/logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>ADMIN | Droprofit Academy </title>
+</head>
+
+<body class="w-screen h-dvh">
+  <div id="app" class="flex flex-col w-full h-full">
+    <header class="bg-black flex items-center justify-around">
+      <picture class="flex justify-center justify-between items-center py-4">
+        <img class="h-[96px] mx-6" src="../../../public/logo.png" alt="Droprofit Academy logo">
+        <img src="../../../public/logo_text.png" alt="Droprofit Academy">
+      </picture>
+    </header>
+      <main class="flex flex-grow overflow-auto justify-center items-center ">
+        <form class="flex flex-col justify-center items-center gap-4 border border-black border-2 rounded-lg py-4 w-[320px]">
+          <label for="action">Selecciona una accion: </label>
+          <select name="action" id="selectAction" class="border border-2 border-black text-center" v-model="form" @input="changeForm">
+            <option value="0" disabled selected>Click para ver acciones</option>
+            <option value="CU">Crear Cliente</option>
+            <option value="CTC">Añadir curso a cliente</option>
+            <option value="RC">Eliminar Cliente</option>
+            <option value="CC">Crear Curso</option>
+            <option value="UC">Actualizar Curso</option>
+            <option value="RCO">Eliminar Curso</option>
+            <option value="CV">Crear Video</option>
+            <option value="AVC">Añadir Video a Curso</option>
+            <option value="UV">Actualizar Video</option>
+            <option value="RV">Eliminar Video</option>
+          </select>
+          <!-- FORM CREATE CLIENT (CU) -->
+          <div v-show="form === 'CU'" class="flex flex-col justify-center items-center gap-2">
+            <label for="username" class="text-left">Nombre:
+              <input type="text" name="username" class="text-center" placeholder="Ingrese su nombre" v-model="name">
+            </label>
+            <label  for="lastname" class="text-left">Apellido:
+              <input type="text" name="lastname" class="text-center" placeholder="Ingrese su apellido" v-model="lastName">
+            </label>
+            <label  for="mail" class="text-left">E-Mail:
+              <input type="email" name="mail" class="text-center" placeholder="Ingrese su email" v-model="email">
+            </label>
+            <label  for="password" class="text-left">Contraseña:
+              <input type="password" name="password" class="text-center" placeholder="Ingrese su contraseña" v-model="password">
+            </label>
+            <button class="border border-2 bg-green-500 px-4 py-2 font-bold rounded-lg" @click.prevent="createClient">Crear Cliente</button>
+            <p v-if="success != '' " class="text-green-500 font-bold">{{success}}</p>
+            <p v-if="error != '' "class="text-red-500 font-bold">{{error}}</p>
+          </div>
+          <!-- FORM ADD COURSE TO CLIENT (CTC) -->
+          <div v-if="form === 'CTC'" class="flex flex-col justify-center items-center gap-2">
+            <label  for="userID" class="text-left">UserID:
+              <input type="number" name="userID" class="text-center" placeholder="2897258460" v-model="userID">
+            </label>
+            <label for="courses" class="flex justify-center items-center">Curso: 
+              <select name="courses" v-model="courseID"> 
+                  <option v-for="course in courses" :value="course.id">{{course.id}} - {{course.name}}</option>
+              </select>
+            </label>
+            <button class="border border-2 bg-blue-400 px-4 py-2 font-bold rounded-lg" @click.prevent="addCourseToClient">Añadir Curso al Cliente</button>
+            <p v-if="success != '' " class="text-green-500 font-bold">{{success}}</p>
+            <p v-if="error != '' "class="text-red-500 font-bold">{{error}}</p>
+          </div>
+          <!-- FORM REMOVE CLIENT (RC) -->
+          <div v-show="form === 'RC'" class="flex flex-col justify-center items-center gap-2">
+            <label  for="userID" class="text-left">UserID:
+              <input type="number" name="userID" class="text-center" placeholder="2897258460" v-model="userID" @input="getClient">
+            </label>
+            <label  for="username" class="text-left">Nombre:
+              <input type="text" name="username" class="text-center" disabled placeholder="Ingrese su nombre" v-model="name">
+            </label>
+            <label  for="lastname" class="text-left">Apellido:
+              <input type="text" name="lastname" class="text-center" disabled placeholder="Ingrese su apellido" v-model="lastName">
+            </label>
+            <label  for="mail" class="text-left">E-Mail:
+              <input type="email" name="mail" class="text-center" disabled placeholder="Ingrese su email" v-model="email">
+            </label>
+            <button class="border border-2 bg-red-500 px-4 py-2 font-bold rounded-lg" @click.prevent="removeClient">Eliminar Cliente</button>
+            <p v-if="success != '' " class="text-green-500 font-bold">{{success}}</p>
+            <p v-if="error != '' "class="text-red-500 font-bold">{{error}}</p>
+          </div>
+          <!-- FORM CREATE COURSE (CC) -->
+          <div v-show="form === 'CC'" class="flex flex-col justify-center items-center gap-2">
+            <label  for="course" class="text-left">Nombre:
+              <input type="text" name="course" class="text-center" placeholder="Ingrese nombre del curso" v-model="courseName" @input="test">
+            </label>
+            <label  for="img" class="text-left">URL IMG:
+              <input type="text" name="img" class="text-center" placeholder="Ingrese URL" v-model="courseIMG" @input="test">
+            </label>
+            <button class="border border-2 bg-green-500 px-4 py-2 font-bold rounded-lg" @click.prevent="createCourse" >Crear Curso</button>
+            <p v-if="success != '' " class="text-green-500 font-bold">{{success}}</p>
+            <p v-if="error != '' "class="text-red-500 font-bold">{{error}}</p>
+          </div>
+          <!-- FORM UPDATE COURSE (UC) -->
+          <div v-show="form === 'UC'" class="flex flex-col justify-center items-center gap-2">
+            <label for="removeCourse" class="flex justify-center items-center">Curso: 
+              <select name="removeCourse" v-model="courseID"> 
+                  <option v-for="course in courses" :value="course.id">{{course.id}} - {{course.name}}</option>
+              </select>
+            </label>
+            <label  for="course" class="text-left">Nombre:
+              <input type="text" name="course" class="text-center" placeholder="Nombre del curso" v-model="courseName" @input="test">
+            </label>
+            <label  for="img" class="text-left">URL IMG:
+              <input type="text" name="img" class="text-center" placeholder="URL de la imagen" v-model="courseIMG" @input="test">
+            </label>
+            <button class="border border-2 bg-blue-400 px-4 py-2 font-bold rounded-lg" @click.prevent="updateCourse">Actualizar Curso</button>
+            <p v-if="success != '' " class="text-green-500 font-bold">{{success}}</p>
+            <p v-if="error != '' "class="text-red-500 font-bold">{{error}}</p>
+          </div>
+          <!-- FORM REMOVE COURSE (RCO) -->
+          <div v-show="form === 'RCO'" class="flex flex-col justify-center items-center gap-2">
+            <label for="removeCourse" class="flex justify-center items-center">Curso: 
+              <select name="removeCourse" v-model="courseID"> 
+                  <option v-for="course in courses" :value="course.id">{{course.id}} - {{course.name}}</option>
+              </select>
+            </label>
+            <button class="border border-2 bg-red-500 px-4 py-2 font-bold rounded-lg" @click.prevent="removeCourse" >Eliminar Curso</button>
+            <p v-if="success != '' " class="text-green-500 font-bold">{{success}}</p>
+            <p v-if="error != '' "class="text-red-500 font-bold">{{error}}</p>
+          </div>
+          <!-- FORM CREATE VIDEO (CV) -->
+          <div v-show="form === 'CV'" class="flex flex-col justify-center items-center gap-2">
+            <label  for="createVideo" class="text-left">Nombre:
+              <input type="text" name="createVideo" class="text-center" placeholder="Ingrese nombre" v-model="videoName" @input="test">
+            </label>
+            <label  for="urlVideo" class="text-left">URL Video:
+              <input type="text" name="urlVideo" class="text-center" placeholder="Ingrese URL" v-model="videoURL" @input="test">
+            </label>
+            <button class="border border-2 bg-green-500 px-4 py-2 font-bold rounded-lg" @click.prevent="createVideo" >Crear Video</button>
+            <p v-if="success != '' " class="text-green-500 font-bold">{{success}}</p>
+            <p v-if="error != '' "class="text-red-500 font-bold">{{error}}</p>
+          </div>
+          <!-- FORM ADD VIDEO TO COURSE (AVC) -->
+          <div v-show="form === 'AVC'" class="flex flex-col justify-center items-center gap-2">
+            <label for="course" class="flex justify-center items-center">Curso: 
+              <select name="course" v-model="courseID" @input="test"> 
+                  <option v-for="course in courses" :value="course.id">{{course.id}} - {{course.name}}</option>
+              </select>
+            </label>
+            <label for="video" class="flex justify-center items-center">Video: 
+              <select name="video" v-model="videoID" class="w-full h-auto" @input="test"> 
+                  <option v-for="video in videos" :value="video.id" class="whitespace-normal break-normal">{{video.id}} - {{video.videoName}}</option>
+              </select>
+            </label>
+            <button class="border border-2 bg-green-500 px-4 py-2 font-bold rounded-lg" @click.prevent="addVideoToCourse" >Añadir Video a un Curso</button>
+            <p v-if="success != '' " class="text-green-500 font-bold">{{success}}</p>
+            <p v-if="error != '' "class="text-red-500 font-bold">{{error}}</p>
+          </div>
+          <!-- FORM UPDATE VIDEO (UV) -->
+          <div v-show="form === 'UV'" class="flex flex-col justify-center items-center gap-2">
+            <label for="video" class="flex justify-center items-center">Video: 
+              <select name="video" v-model="videoID" class="w-full h-auto" @input="test"> 
+                  <option v-for="video in videos" :value="video.id" class="whitespace-normal break-normal">{{video.id}} - {{video.videoName}}</option>
+              </select>
+            </label>
+            <label  for="course" class="text-left">Nombre:
+              <input type="text" name="course" class="text-center" placeholder="Nombre nuevo del Video" v-model="videoName" @input="test">
+            </label>
+            <label  for="img" class="text-left">URL VIDEO:
+              <input type="text" name="img" class="text-center" placeholder="URL del Video" v-model="videoURL" @input="test">
+            </label>
+            <label for="course" class="flex justify-center items-center">Curso: 
+              <select name="course" v-model="courseID" @input="test"> 
+                  <option v-for="course in courses" :value="course.id">{{course.id}} - {{course.name}}</option>
+              </select>
+            </label>
+            <button class="border border-2 bg-blue-400 px-4 py-2 font-bold rounded-lg" @click.prevent="updateVideo" >Actualizar Video</button>
+            <p v-if="success != '' " class="text-green-500 font-bold">{{success}}</p>
+            <p v-if="error != '' "class="text-red-500 font-bold">{{error}}</p>
+          </div>
+          <!-- FORM REMOVE VIDEO (RV) -->
+          <div v-show="form === 'RV'" class="flex flex-col justify-center items-center gap-2">
+            <label for="video" class="flex justify-center items-center">Video: 
+              <select name="video" v-model="videoID" class="w-full h-auto" @input="test"> 
+                  <option v-for="video in videos" :value="video.id" class="whitespace-normal break-normal">{{video.id}} - {{video.videoName}}</option>
+              </select>
+            </label>
+            <button class="border border-2 bg-red-500 px-4 py-2 font-bold rounded-lg" @click.prevent="removeVideo" >Eliminar Video</button>
+            <p v-if="success != '' " class="text-green-500 font-bold">{{success}}</p>
+            <p v-if="error != '' "class="text-red-500 font-bold">{{error}}</p>
+          </div>
+        </form>
+      </main>
+      <footer>
+        <div class="text-logoteal flex bg-black font-bold justify-around items-center w-full">
+          <small>&copy; 2024 Droprofit Academy. All rights reserved.</small>
+          <small class="hover:text-white"><a href="mailto:DroprofitAcademy@gmail.com">DroprofitAcademy@gmail.com</a></small>
+        </div>
+      </footer>
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="../../../public/tailwind.config.js"></script>
+  <script src="./admin.js"></script>
+</body>
+
+</html>

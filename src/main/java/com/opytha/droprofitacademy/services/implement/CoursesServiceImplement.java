@@ -106,7 +106,7 @@ public class CoursesServiceImplement implements CoursesService {
             return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
         }
 
-        if (existingCourse.isActive()) {
+        if (!existingCourse.isActive()) {
             return new ResponseEntity<>("Course already deactivated", HttpStatus.BAD_REQUEST);
         }
 

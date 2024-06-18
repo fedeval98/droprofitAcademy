@@ -41,16 +41,24 @@ const options = {
       this.signupactive = true
     },
     login(){
-      axios.post("/api/login?email="+this.email+"&password="+this.password)
+      axios.post("/api/login?email="+this.email+"&password="+this.password, { withCredentials: true })
         .then(response => {
             console.log(response)
-            if(this.password =="admin"&&this.email=="admin@admin.com"){
-              window.open("./web/admin/create-loan.html")
-            }else if(response.status.toString().startsWith('2')){
-              window.location.href="../web/assets/html/inicio.html"
-          }
-          this.clearData()
-          
+            setTimeout(() => {
+              axios.get("/api/clients/current", { withCredentials: true })
+                .then(response => {
+                  if(response.data.rol == "ADMIN"){
+                    this.clearData()
+                    window.location.href = "/web/admin/admin.html"
+                  } else {
+                    this.clearData()
+                    window.location.href = "/web/assets/html/inicio.html"
+                  }
+                })
+                .catch(error => {
+                  console.log("Login error", error)
+                })
+            },2000)
         })
         .catch(error => {
         console.log("Error", error)

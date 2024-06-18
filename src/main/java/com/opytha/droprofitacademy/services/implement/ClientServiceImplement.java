@@ -138,7 +138,7 @@ public class ClientServiceImplement implements ClientService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> removeClient(String email, Long id) {
+    public ResponseEntity<String> removeClient(String email, int id) {
 
         Client auth = clientsRepository.findByEmail(email);
 
@@ -146,7 +146,7 @@ public class ClientServiceImplement implements ClientService {
             return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
         }
 
-        Client client = findById(id);
+        Client client = findByUserID(id);
 
         if (client == null){
             return new ResponseEntity<>("Client not found", HttpStatus.BAD_REQUEST);
@@ -156,21 +156,31 @@ public class ClientServiceImplement implements ClientService {
             return new ResponseEntity<>("Client is already inactive", HttpStatus.OK);
         }
 
-        clientsRepository.deleteById(id);
+        clientsRepository.deleteById(client.getId());
 
         return new ResponseEntity<>("Client remove successfully", HttpStatus.OK);
     }
 
     @Override
     @Transactional
-    public ResponseEntity<String> addCourseToClient (int userId, Long CourseId, String email){
+    public ResponseEntity<String> addCourseToClient (String userIdStr, Long CourseId, String email){
         Client auth = findByEmail(email);
 
         if(auth.getRol().equals(Roles.USER)){
             return new ResponseEntity<>("Admin privileges required.", HttpStatus.FORBIDDEN);
         }
 
-        Client user = findByUserID(userId);
+        if(userIdStr == null ){
+            return new ResponseEntity<>("UserID can't be blank", HttpStatus.NOT_FOUND);
+        }
+
+        int userID = Integer.parseInt(userIdStr);
+
+        if(CourseId == null){
+            return new ResponseEntity<>("Course can't be blank", HttpStatus.NOT_FOUND);
+        }
+
+        Client user = findByUserID(userID);
 
         if(user == null){
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
